@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  sqlserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.sql_server
+    container_name: sqlserver
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: P@ssword123
+    networks:
+      - network_bridge
+    
+  app_php:
+    depends_on:
+      - sqlserver
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    container_name: app_sqlserver
+    ports:
+      - 8080:80
+    networks:
+      - network_bridge
+
+networks:
+  network_bridge:
+    driver: bridge

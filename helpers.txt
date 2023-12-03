@@ -1,0 +1,5 @@
+docker build -t test-php -f Dockerfile.php .
+docker build -t test-sqlserver -f Dockerfile.sql_server .
+
+docker run -p 1433:1433 --name sqlserver test-sqlserver
+docker run -p 8080:80 --name test-php test-php

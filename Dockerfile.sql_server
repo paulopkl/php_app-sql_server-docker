@@ -1,0 +1,20 @@
+# Use the official Microsoft SQL Server 2019 image
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+USER root
+
+# Set environment variables for SQL Server
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=P@ssword123
+
+# Expose the SQL Server port
+EXPOSE 1433
+
+# Copy a custom script to initialize the database
+COPY init.sql /usr/src/app/
+
+# Grant permissions to the script
+RUN chmod +x /usr/src/app/init.sql
+
+RUN (/opt/mssql/bin/sqlservr --accept-eula &) | grep -q "Service Broker manager has started" && \
+    /opt/mssql-tools/bin/sqlcmd -S127.0.0.1 -USA -P$SA_PASSWORD -i /usr/src/app/init.sql
