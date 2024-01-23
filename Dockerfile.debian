@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM debian:12.04
 
 # Udate packages
 # RUN apt update && \
